@@ -3,14 +3,16 @@ import { createClient } from '@supabase/supabase-js';
 const url = import.meta.env.VITE_SUPABASE_URL;
 const anon = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!url || !anon) {
-  console.error('Missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY env vars');
-}
+export const isSupabaseConfigured = Boolean(url && anon);
 
-export const supabase = createClient(url, anon, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: false,
-  },
-});
+export const supabase = createClient(
+  url || 'https://missing-project.invalid',
+  anon || 'missing-supabase-anon-key',
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: false,
+    },
+  }
+);
